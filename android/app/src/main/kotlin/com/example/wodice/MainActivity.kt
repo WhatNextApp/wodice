@@ -1,4 +1,4 @@
-package com.akmenah.wodice
+package com.example.wodice
 
 import io.flutter.embedding.android.FlutterActivity
 

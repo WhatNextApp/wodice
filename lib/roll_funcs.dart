@@ -1,18 +1,18 @@
 import 'dart:math';
 
 String stringMethod(int die, counter, dieCount) {
-  var str = '';
-  str += '{' + die.toString() + '}' + '   ';
+  String str = '';
+  str += '{$die}   ';
   return str;
 }
 
 List<String> rollDP(String dP, bool botchable, bool specialized, String d) {
-  var diceAmount = int.parse(dP);
-  var diff = int.parse(d);
+  int diceAmount = int.parse(dP);
+  int diff = int.parse(d);
 
-  var dicePool = dicRoller(diceAmount);
-  var rate = result(dicePool, botchable, specialized, diff);
-  var resultStr;
+  List<dynamic> dicePool = dicRoller(diceAmount);
+  int rate = result(dicePool, botchable, specialized, diff);
+  String resultStr;
 
   if ((rate < 0) && (botchable)) {
     resultStr = 'Botch';
@@ -20,18 +20,18 @@ List<String> rollDP(String dP, bool botchable, bool specialized, String d) {
     resultStr = 'No Successes!';
   } else {
     if (rate == 1) {
-      resultStr = rate.toString() + ' Success';
+      resultStr = '$rate Success';
     } else {
-      resultStr = rate.toString() + ' Successes';
+      resultStr = '$rate Successes';
     }
   }
 
-  var counter = 1;
-  var dieCount = dicePool.length;
-  var tenstr = '';
-  var onestr = '';
-  var succstr = '';
-  var otherstr = '';
+  int counter = 1;
+  int dieCount = dicePool.length;
+  String tenstr = '';
+  String onestr = '';
+  String succstr = '';
+  String otherstr = '';
   for (var die in dicePool) {
     if (die == 1) {
       onestr += stringMethod(die, counter, dieCount);
@@ -45,24 +45,24 @@ List<String> rollDP(String dP, bool botchable, bool specialized, String d) {
     counter++;
   }
 
-  var dPStr = '';
+  String dPStr = '';
 
   if (botchable && specialized) {
-    dPStr += onestr + '\n' + otherstr + '\n' + succstr + '\n' + tenstr;
+    dPStr += '$onestr\n$otherstr\n$succstr\n$tenstr';
   } else if (botchable) {
-    dPStr += onestr + '\n' + otherstr + '\n' + succstr + tenstr;
+    dPStr += '$onestr\n$otherstr\n$succstr$tenstr';
   } else if (specialized) {
-    dPStr += onestr + otherstr + '\n' + succstr + '\n' + tenstr;
+    dPStr += '$onestr$otherstr\n$succstr\n$tenstr';
   } else {
-    dPStr += onestr + otherstr + '\n' + succstr + tenstr;
+    dPStr += '$onestr$otherstr\n$succstr$tenstr';
   }
 
   return [resultStr, dPStr];
 }
 
 List dicRoller(int diceAmount) {
-  var rng = Random();
-  var resultList = [];
+  Random rng = Random();
+  List<dynamic> resultList = [];
 
   for (var i = 1; i <= diceAmount; i++) {
     resultList.add(rng.nextInt(10) + 1);
@@ -74,14 +74,14 @@ List dicRoller(int diceAmount) {
 }
 
 int result(dicePool, botchable, specialized, diff) {
-  var res = numberOSuccs(dicePool, diff);
-  var ones = countDie(dicePool, 1);
-  var tens = countDie(dicePool, 10);
+  int res = numberOSuccs(dicePool, diff);
+  int ones = countDie(dicePool, 1);
+  int tens = countDie(dicePool, 10);
 
   if (botchable && specialized) {
     res -= ones;
     if (tens >= ones) {
-      var leftTens = tens - ones;
+      int leftTens = tens - ones;
       res += leftTens;
     }
   } else {
@@ -96,7 +96,7 @@ int result(dicePool, botchable, specialized, diff) {
 }
 
 int countDie(dicePool, int i) {
-  var counter = 0;
+  int counter = 0;
   for (var die in dicePool) {
     if (die == i) {
       counter++;
@@ -106,7 +106,7 @@ int countDie(dicePool, int i) {
 }
 
 int numberOSuccs(dicePool, diff) {
-  var numOS = 0;
+  int numOS = 0;
   for (var die in dicePool) {
     if (die >= diff) {
       numOS += 1;
